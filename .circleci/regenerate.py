@@ -3,32 +3,57 @@
 import jinja2, yaml
 import os.path
 
+
+class Workflow:
+    def __init__(self, name, members):
+        self.name = name
+        self.members = members
+
+    def addIf(self, condition, items):
+        if condition:
+            self.members.update(items)
+
+    def includeIn(self, workflow_list):
+        workflow_list.append({self.name: self.members})
+
+
 def workflow(btype, os, python_version, cu_version, unicode, prefix='', upload=False):
-    w = []
+
+    workflow_list = []
+
     unicode_suffix = "u" if unicode else ""
-    workflow_name = f"{prefix}binary_{os}_{btype}_py{python_version}{unicode_suffix}_{cu_version}"
-    d = {
-        "name": workflow_name,
+    base_workflow_name = f"{prefix}binary_{os}_{btype}_py{python_version}{unicode_suffix}_{cu_version}"
+
+    w = Workflow(f"binary_{os}_{btype}", {
+        "name": base_workflow_name,
         "python_version": python_version,
         "cu_version": cu_version,
-    }
-    if unicode:
-        d["unicode_abi"] = "1"
-    if cu_version == "cu92":
-        d["wheel_docker_image"] = "soumith/manylinux-cuda92"
-    w.append({f"binary_{os}_{btype}": d})
+    })
+
+    w.addIf(unicode, {
+        "unicode_abi": "1"
+    })
+
+    w.addIf(cu_version == "cu92", {
+        "wheel_docker_image": "soumith/manylinux-cuda92"
+    })
+
+    w.includeIn(workflow_list)
 
     if upload:
-        d_upload = {
-            "name": f"{workflow_name}_upload",
+        w2 = Workflow(f"binary_{btype}_upload", {
+            "name": f"{base_workflow_name}_upload",
             "context": "org-member",
-            "requires": [workflow_name],
-        }
-        if btype == 'wheel':
-            d_upload["subfolder"] = "" if os == 'macos' else cu_version + "/"
-        w.append({f"binary_{btype}_upload": d_upload})
+            "requires": [base_workflow_name],
+        })
 
-    return w
+        w2.addIf(btype == "wheel", {
+            "subfolder": "" if os == 'macos' else cu_version + "/"
+        })
+
+        w2.includeIn(workflow_list)
+
+    return workflow_list
 
 def workflows(prefix='', upload=False, indentation=6):
     w = []
@@ -38,7 +63,7 @@ def workflows(prefix='', upload=False, indentation=6):
                 for cu_version in (["cpu", "cu92", "cu100"] if os == "linux" else ["cpu"]):
                     for unicode in ([False, True] if btype == "wheel" and python_version == "2.7" else [False]):
                         w += workflow(btype, os, python_version, cu_version, unicode, prefix=prefix, upload=upload)
-    return ("\n" + " "*indentation).join(yaml.dump(w).splitlines())
+    return ("\n" + " " * indentation).join(yaml.dump(w).splitlines())
 
 d = os.path.dirname(__file__)
 env = jinja2.Environment(
