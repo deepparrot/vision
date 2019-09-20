@@ -1,8 +1,7 @@
+sotabencheval
 numpy
 tqdm
 torch
 torchvision
 Pillow
 scipy
-sotabencheval
-
