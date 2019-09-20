@@ -1,6 +1,9 @@
-sotabencheval
+numpy
+cython
 tqdm
-torchvision
 torch
+torchvision
 Pillow
 scipy
+sotabencheval
+
