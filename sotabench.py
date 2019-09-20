@@ -1,3 +1,56 @@
+import PIL
+from sotabencheval.semantic_segmentation import PASCALVOCEvaluator
+import torch
+import torchvision
+from torchvision.models.segmentation import fcn_resnet101
+import torchvision.transforms as transforms
+import tqdm
+
+from .sotabench_transforms import Compose, Resize, ToTensor
+
+MODEL_NAME = 'fcn_resnet101'
+
+def model_output_function(output, labels):
+    return output['out']
+
+def collate_fn(batch):
+    images, targets = list(zip(*batch))
+    batched_imgs = cat_list(images, fill_value=0)
+    batched_targets = cat_list(targets, fill_value=255)
+    return batched_imgs, batched_targets
+
+device = torch.device('cuda')
+
+normalize = Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+transforms = Compose([Resize((520, 480)), ToTensor(), normalize])
+
+dataset_test = torchvision.datasets.VOCSegmentation(root='./data', year='2012', image_set="val", 
+                                                    transforms=PASCALVOC.transforms)
+test_sampler = torch.utils.data.SequentialSampler(dataset_test)
+
+data_loader_test = torch.utils.data.DataLoader(
+    dataset_test, batch_size=32,
+    sampler=test_sampler, num_workers=4,
+    collate_fn=collate_fn)
+
+model = torchvision.models.segmentation.__dict__['fcn_resnet101'](num_classes=21, pretrained=True)
+model.to(device)
+model.eval()
+
+evaluator = PASCALVOCEvaluator(root='./data', dataset_year='2012', split='val', paper_model_name='FCN (ResNet-101)',
+                              paper_arxiv_id='1605.06211')
+
+with torch.no_grad():
+    for image, target in tqdm.tqdm(data_loader_test):
+        image, target = image.to('cuda'), target.to('cuda')
+        output = model(image)
+        output = output['out']
+        evaluator.add(output.argmax(1).flatten().cpu().numpy(), target.flatten().cpu().numpy())
+
+evaluator.save()
+
+
+"""
 from torchbench.object_detection import COCO
 from torchbench.utils import send_model_to_device
 from torchbench.object_detection.transforms import Compose, ConvertCocoPolysToMask, ToTensor
@@ -32,3 +85,4 @@ COCO.benchmark(
     batch_size=8,
     num_gpu=1
 )
+"""
