@@ -91,9 +91,9 @@ model_output_transform = coco_output_transform
 send_data_to_device = coco_data_to_device
 
 test_dataset = torchbench.datasets.CocoDetection(
-    root=os.path.join('./data/vision/coco', "val%s" % '2017'),
+    root=os.path.join('./.data/vision/coco', "val%s" % '2017'),
     annFile=os.path.join(
-        './data/vision/coco', "annotations/instances_val%s.json" % '2017'
+        './.data/vision/coco', "annotations/instances_val%s.json" % '2017'
     ),
     transform=None,
     target_transform=None,
@@ -113,7 +113,7 @@ test_loader.no_classes = 91  # Number of classes for COCO Detection
 iterator = tqdm.tqdm(test_loader, desc="Evaluation", mininterval=5)
 
 evaluator = COCOEvaluator(
-    root='./data',
+    root='./.data',
     paper_model_name='ResNeXt-101-32x8d',
     paper_arxiv_id='1611.05431')
 
