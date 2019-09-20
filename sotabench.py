@@ -22,7 +22,7 @@ normalize = Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 my_transforms = Compose([Resize((520, 480)), ToTensor(), normalize])
 
 dataset_test = torchvision.datasets.VOCSegmentation(root='./.data/vision/voc2012', year='2012', image_set="val", 
-                                                    transforms=my_transforms)
+                                                    transforms=my_transforms, download=True)
 test_sampler = torch.utils.data.SequentialSampler(dataset_test)
 
 data_loader_test = torch.utils.data.DataLoader(
