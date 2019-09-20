@@ -1,5 +1,4 @@
 Cython
-sotabencheval
 numpy
 tqdm
 torch
