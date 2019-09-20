@@ -50,8 +50,8 @@ with torch.no_grad():
         image, target = image.to('cuda'), target.to('cuda')
         output = model(image)
         output = output['out']
+        
         evaluator.add(output.argmax(1).flatten().cpu().numpy(), target.flatten().cpu().numpy())
-
         if evaluator.cache_exists:
             break
         
