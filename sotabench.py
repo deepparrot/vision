@@ -57,7 +57,6 @@ with torch.no_grad():
         
 evaluator.save()
 
-
 """
 from torchbench.object_detection import COCO
 from torchbench.utils import send_model_to_device
