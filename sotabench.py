@@ -61,6 +61,7 @@ evaluator.save()
 
 from sotabencheval.object_detection import COCOEvaluator
 from torch.utils.data import DataLoader
+import torchbench
 from torchbench.utils import send_model_to_device
 from torchbench.object_detection.transforms import Compose, ConvertCocoPolysToMask, ToTensor
 import os
