@@ -52,6 +52,9 @@ with torch.no_grad():
         output = output['out']
         evaluator.add(output.argmax(1).flatten().cpu().numpy(), target.flatten().cpu().numpy())
 
+        if evaluator.cache_exists:
+            break
+        
 evaluator.save()
 
 
