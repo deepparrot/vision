@@ -1,4 +1,5 @@
 sotabencheval
+tqdm
 torchvision
 torch
 PIL
