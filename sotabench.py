@@ -10,9 +10,6 @@ from .sotabench_transforms import Compose, Resize, ToTensor
 
 MODEL_NAME = 'fcn_resnet101'
 
-def model_output_function(output, labels):
-    return output['out']
-
 def collate_fn(batch):
     images, targets = list(zip(*batch))
     batched_imgs = cat_list(images, fill_value=0)
