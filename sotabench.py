@@ -6,7 +6,7 @@ from torchvision.models.segmentation import fcn_resnet101
 import torchvision.transforms as transforms
 import tqdm
 
-from .sotabench_transforms import Compose, Resize, ToTensor
+from sotabench_transforms import Compose, Resize, ToTensor
 
 MODEL_NAME = 'fcn_resnet101'
 
