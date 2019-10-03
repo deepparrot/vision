@@ -168,3 +168,26 @@ ImageNet.benchmark(
     num_gpu=1
 )   
 
+# SQUEEZENET
+
+ImageNet.benchmark(
+    model=models.squeezenet1_0(pretrained=True),
+    paper_model_name='SqueezeNet',
+    paper_arxiv_id='1602.07360',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1,
+    paper_results={'Top 1 Accuracy': 0.575, 'Top 5 Accuracy': 0.803}
+)
+
+ImageNet.benchmark(
+    model=models.squeezenet1_1(pretrained=True),
+    paper_model_name='SqueezeNet 1.1',
+    paper_arxiv_id='1602.07360',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1
+)
+
+
+
