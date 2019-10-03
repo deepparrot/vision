@@ -8,12 +8,7 @@ import torchvision.transforms as transforms
 import PIL
 
 import torchvision.models as models
-"""
-mobilenet = models.mobilenet_v2(pretrained=True)
-resnext50_32x4d = models.resnext50_32x4d(pretrained=True)
-wide_resnet50_2 = models.wide_resnet50_2(pretrained=True)
-mnasnet = models.mnasnet1_0(pretrained=True)
-"""
+
 # DEEP RESIDUAL LEARNING
 
 # Define the transforms need to convert ImageNet data to expected model input
@@ -247,26 +242,6 @@ ImageNet.benchmark(
 # SHUFFLENET V2
 
 ImageNet.benchmark(
-    model=models.shufflenet_v2_x2_0(pretrained=True),
-    paper_model_name='ShuffleNet V2 (2x)',
-    paper_arxiv_id='1807.11164',
-    input_transform=input_transform,
-    batch_size=256,
-    num_gpu=1,
-    paper_results={'Top 1 Accuracy': 0.749}
-)
-
-ImageNet.benchmark(
-    model=models.shufflenet_v2_x1_5(pretrained=True),
-    paper_model_name='ShuffleNet V2 (1.5x)',
-    paper_arxiv_id='1807.11164',
-    input_transform=input_transform,
-    batch_size=256,
-    num_gpu=1,
-    paper_results={'Top 1 Accuracy': 0.726} 
-)
-
-ImageNet.benchmark(
     model=models.shufflenet_v2_x1_0(pretrained=True),
     paper_model_name='ShuffleNet V2 (1x)',
     paper_arxiv_id='1807.11164',
@@ -285,3 +260,81 @@ ImageNet.benchmark(
     num_gpu=1,
     paper_results={'Top 1 Accuracy': 0.603}
 )
+
+# MOBILENET
+
+ImageNet.benchmark(
+    model=models.mobilenet_v2(pretrained=True),
+    paper_model_name='MobileNetV2',
+    paper_arxiv_id='1801.04381',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1,
+    paper_results={'Top 1 Accuracy': 0.72}
+)
+
+# RESNEXT
+
+ImageNet.benchmark(
+    model=models.resnext50_32x4d(pretrained=True),
+    paper_model_name='ResNeXt-50 32x4d',
+    paper_arxiv_id='1611.05431',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1
+)
+
+ImageNet.benchmark(
+    model=models.resnext50_32x8d(pretrained=True),
+    paper_model_name='ResNeXt-50 32x8d',
+    paper_arxiv_id='1611.05431',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1
+)
+
+# WIDE RESNET
+
+ImageNet.benchmark(
+    model=models.wide_resnet50_2(pretrained=True),
+    paper_model_name='WRN-50-2-bottleneck',
+    paper_arxiv_id='1605.07146',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1
+)
+
+ImageNet.benchmark(
+    model=models.wide_resnet101_2(pretrained=True),
+    paper_model_name='WRN-101-2-bottleneck',
+    paper_arxiv_id='1605.07146',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1
+)
+
+# MNASNET
+
+ImageNet.benchmark(
+    model=models.mnasnet0_5(pretrained=True),
+    paper_model_name='MnasNet-A1 (depth multiplier=0.5)',
+    paper_arxiv_id='1807.11626',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1,
+    paper_results={'Top 1 Accuracy': 0.689}
+)
+
+ImageNet.benchmark(
+    model=models.mnasnet1_0(pretrained=True),
+    paper_model_name='MnasNet-A1',
+    paper_arxiv_id='1807.11626',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1
+)
+
+
+
+
+
