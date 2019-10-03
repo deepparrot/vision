@@ -9,9 +9,6 @@ import PIL
 
 import torchvision.models as models
 """
-inception = models.inception_v3(pretrained=True)
-googlenet = models.googlenet(pretrained=True)
-shufflenet = models.shufflenet_v2_x1_0(pretrained=True)
 mobilenet = models.mobilenet_v2(pretrained=True)
 resnext50_32x4d = models.resnext50_32x4d(pretrained=True)
 wide_resnet50_2 = models.wide_resnet50_2(pretrained=True)
@@ -225,8 +222,66 @@ ImageNet.benchmark(
     num_gpu=1
 )
 
+# INCEPTION V3
 
+ImageNet.benchmark(
+    model=models.inception_v3(pretrained=True),
+    paper_model_name='Inception V3',
+    paper_arxiv_id='1512.00567',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1
+)
 
+# INCEPTION V1 (GOOGLENET)
 
+ImageNet.benchmark(
+    model=models.googlenet(pretrained=True),
+    paper_model_name='Inception V1',
+    paper_arxiv_id='1409.4842',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1
+)
 
+# SHUFFLENET V2
 
+ImageNet.benchmark(
+    model=models.shufflenet_v2_x2_0(pretrained=True),
+    paper_model_name='ShuffleNet V2 (2x)',
+    paper_arxiv_id='1807.11164',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1,
+    paper_results={'Top 1 Accuracy': 0.749}
+)
+
+ImageNet.benchmark(
+    model=models.shufflenet_v2_x1_5(pretrained=True),
+    paper_model_name='ShuffleNet V2 (1.5x)',
+    paper_arxiv_id='1807.11164',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1,
+    paper_results={'Top 1 Accuracy': 0.726} 
+)
+
+ImageNet.benchmark(
+    model=models.shufflenet_v2_x1_0(pretrained=True),
+    paper_model_name='ShuffleNet V2 (1x)',
+    paper_arxiv_id='1807.11164',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1,
+    paper_results={'Top 1 Accuracy': 0.694}
+)
+
+ImageNet.benchmark(
+    model=models.shufflenet_v2_x0_5(pretrained=True),
+    paper_model_name='ShuffleNet V2 (0.5x)',
+    paper_arxiv_id='1807.11164',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1,
+    paper_results={'Top 1 Accuracy': 0.603}
+)
