@@ -1,7 +1,7 @@
-Cython
 numpy
 tqdm
 torch
+torchbench
 torchvision
 Pillow
 scipy
