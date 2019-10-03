@@ -9,9 +9,7 @@ import PIL
 
 import torchvision.models as models
 """
-alexnet = models.alexnet(pretrained=True)
 squeezenet = models.squeezenet1_0(pretrained=True)
-vgg16 = models.vgg16(pretrained=True)
 densenet = models.densenet161(pretrained=True)
 inception = models.inception_v3(pretrained=True)
 googlenet = models.googlenet(pretrained=True)
@@ -79,3 +77,94 @@ ImageNet.benchmark(
     batch_size=256,
     num_gpu=1
 )   
+
+# ALEXNET
+
+ImageNet.benchmark(
+    model=models.alexnet(pretrained=True),
+    paper_model_name='AlexNet (single)',
+    paper_arxiv_id='1404.5997',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1,
+    paper_results={'Top 1 Accuracy': 0.5714}
+)   
+
+# VGG
+
+ImageNet.benchmark(
+    model=models.vgg11(pretrained=True),
+    paper_model_name='VGG-11',
+    paper_arxiv_id='1409.1556',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1,
+    paper_results={'Top 1 Accuracy': 0.704, 'Top 5 Accuracy': 0.896}
+)
+
+ImageNet.benchmark(
+    model=models.vgg13(pretrained=True),
+    paper_model_name='VGG-13',
+    paper_arxiv_id='1409.1556',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1,
+    paper_results={'Top 1 Accuracy': 0.713, 'Top 5 Accuracy': 0.901}
+)   
+
+ImageNet.benchmark(
+    model=models.vgg16(pretrained=True),
+    paper_model_name='VGG-16',
+    paper_arxiv_id='1409.1556',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1
+)   
+
+ImageNet.benchmark(
+    model=models.vgg19(pretrained=True),
+    paper_model_name='VGG-19',
+    paper_arxiv_id='1409.1556',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1
+)   
+
+ImageNet.benchmark(
+    model=models.vgg11_bn(pretrained=True),
+    paper_model_name='VGG-11 (batch-norm)',
+    paper_arxiv_id='1409.1556',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1,
+    paper_results={'Top 1 Accuracy': 0.704, 'Top 5 Accuracy': 0.896}
+)
+
+ImageNet.benchmark(
+    model=models.vgg13_bn(pretrained=True),
+    paper_model_name='VGG-13 (batch-norm)',
+    paper_arxiv_id='1409.1556',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1,
+    paper_results={'Top 1 Accuracy': 0.713, 'Top 5 Accuracy': 0.901}
+)   
+
+ImageNet.benchmark(
+    model=models.vgg16_bn(pretrained=True),
+    paper_model_name='VGG-16 (batch-norm)',
+    paper_arxiv_id='1409.1556',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1
+)   
+
+ImageNet.benchmark(
+    model=models.vgg19_bn(pretrained=True),
+    paper_model_name='VGG-19 (batch-norm)',
+    paper_arxiv_id='1409.1556',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1
+)   
+
