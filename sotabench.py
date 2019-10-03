@@ -9,8 +9,6 @@ import PIL
 
 import torchvision.models as models
 """
-squeezenet = models.squeezenet1_0(pretrained=True)
-densenet = models.densenet161(pretrained=True)
 inception = models.inception_v3(pretrained=True)
 googlenet = models.googlenet(pretrained=True)
 shufflenet = models.shufflenet_v2_x1_0(pretrained=True)
@@ -188,6 +186,47 @@ ImageNet.benchmark(
     batch_size=256,
     num_gpu=1
 )
+
+# DENSENET
+
+ImageNet.benchmark(
+    model=models.densenet121(pretrained=True),
+    paper_model_name='DenseNet-121',
+    paper_arxiv_id='1608.06993',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1
+)
+
+ImageNet.benchmark(
+    model=models.densenet161(pretrained=True),
+    paper_model_name='DenseNet-161',
+    paper_arxiv_id='1608.06993',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1
+)
+
+ImageNet.benchmark(
+    model=models.densenet169(pretrained=True),
+    paper_model_name='DenseNet-169',
+    paper_arxiv_id='1608.06993',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1
+)
+
+ImageNet.benchmark(
+    model=models.densenet201(pretrained=True),
+    paper_model_name='DenseNet-201',
+    paper_arxiv_id='1608.06993',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1
+)
+
+
+
 
 
 
