@@ -1,59 +1,81 @@
 import PIL
-from sotabencheval.semantic_segmentation import PASCALVOCEvaluator
 import torch
 import torchvision
-from torchvision.models.segmentation import fcn_resnet101
-import torchvision.transforms as transforms
 import tqdm
 
-from sotabench_transforms import Normalize, Compose, Resize, ToTensor
+from torchbench.image_classification import ImageNet
+import torchvision.transforms as transforms
+import PIL
 
-MODEL_NAME = 'fcn_resnet101'
+import torchvision.models as models
+"""
+alexnet = models.alexnet(pretrained=True)
+squeezenet = models.squeezenet1_0(pretrained=True)
+vgg16 = models.vgg16(pretrained=True)
+densenet = models.densenet161(pretrained=True)
+inception = models.inception_v3(pretrained=True)
+googlenet = models.googlenet(pretrained=True)
+shufflenet = models.shufflenet_v2_x1_0(pretrained=True)
+mobilenet = models.mobilenet_v2(pretrained=True)
+resnext50_32x4d = models.resnext50_32x4d(pretrained=True)
+wide_resnet50_2 = models.wide_resnet50_2(pretrained=True)
+mnasnet = models.mnasnet1_0(pretrained=True)
+"""
+# DEEP RESIDUAL LEARNING
 
-def cat_list(images, fill_value=0):
-    max_size = tuple(max(s) for s in zip(*[img.shape for img in images]))
-    batch_shape = (len(images),) + max_size
-    batched_imgs = images[0].new(*batch_shape).fill_(fill_value)
-    for img, pad_img in zip(images, batched_imgs):
-        pad_img[..., : img.shape[-2], : img.shape[-1]].copy_(img)
-    return batched_imgs
+# Define the transforms need to convert ImageNet data to expected model input
+normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406], 
+    std=[0.229, 0.224, 0.225])
+input_transform = transforms.Compose([
+    transforms.Resize(256, PIL.Image.BICUBIC),
+    transforms.CenterCrop(224),
+    transforms.ToTensor(),
+    normalize,
+])
 
-def collate_fn(batch):
-    images, targets = list(zip(*batch))
-    batched_imgs = cat_list(images, fill_value=0)
-    batched_targets = cat_list(targets, fill_value=255)
-    return batched_imgs, batched_targets
+ImageNet.benchmark(
+    model=models.resnet18(pretrained=True),
+    paper_model_name='ResNet-18',
+    paper_arxiv_id='1512.03385',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1,
+    paper_results={'Top 1 Accuracy': 0.7212}
+)
 
-device = torch.device('cuda')
+ImageNet.benchmark(
+    model=models.resnet34(pretrained=True),
+    paper_model_name='ResNet-34 A',
+    paper_arxiv_id='1512.03385',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1,
+    paper_results={'Top 1 Accuracy': 0.7497, 'Top 5 Accuracy': 0.9224}
+)
 
-normalize = Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-my_transforms = Compose([Resize((520, 480)), ToTensor(), normalize])
+ImageNet.benchmark(
+    model=models.resnet50(pretrained=True),
+    paper_model_name='ResNet-50',
+    paper_arxiv_id='1512.03385',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1
+)
 
-dataset_test = torchvision.datasets.VOCSegmentation(root='./.data/vision/voc2012', year='2012', image_set="val", 
-                                                    transforms=my_transforms, download=True)
-test_sampler = torch.utils.data.SequentialSampler(dataset_test)
+ImageNet.benchmark(
+    model=models.resnet101(pretrained=True),
+    paper_model_name='ResNet-101',
+    paper_arxiv_id='1512.03385',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1
+)   
 
-data_loader_test = torch.utils.data.DataLoader(
-    dataset_test, batch_size=32,
-    sampler=test_sampler, num_workers=4,
-    collate_fn=collate_fn)
-
-model = torchvision.models.segmentation.__dict__['fcn_resnet101'](num_classes=21, pretrained=True)
-model.to(device)
-model.eval()
-
-evaluator = PASCALVOCEvaluator(model_name='FCN (ResNet-101)',
-                              paper_arxiv_id='1605.06211')
-
-with torch.no_grad():
-    for image, target in tqdm.tqdm(data_loader_test):
-        image, target = image.to('cuda'), target.to('cuda')
-        output = model(image)
-        output = output['out']
-        
-        evaluator.add(output.argmax(1).flatten().cpu().numpy(), target.flatten().cpu().numpy())
-        if evaluator.cache_exists:
-            print('Cache is %s' % (evaluator.batch_hash))
-            break
-        
-evaluator.save()
+ImageNet.benchmark(
+    model=models.resnet152(pretrained=True),
+    paper_model_name='ResNet-152',
+    paper_arxiv_id='1512.03385',
+    input_transform=input_transform,
+    batch_size=256,
+    num_gpu=1
+)   
