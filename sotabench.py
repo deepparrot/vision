@@ -285,8 +285,8 @@ ImageNet.benchmark(
 )
 
 ImageNet.benchmark(
-    model=models.resnext50_32x8d(pretrained=True),
-    paper_model_name='ResNeXt-50 32x8d',
+    model=models.resnext101_32x8d(pretrained=True),
+    paper_model_name='ResNeXt-101 32x8d',
     paper_arxiv_id='1611.05431',
     input_transform=input_transform,
     batch_size=256,
